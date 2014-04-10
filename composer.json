@@ -1,0 +1,22 @@
+{
+	"name": "Erliz/TeamLead-Dashboard",
+	"description": "Dashboard for daily coders team lead tasks",
+	"minimum-stability": "dev",
+	"license": "proprietary",
+	"authors": [
+		{
+			"name": "Stanislav Vetlovskiy",
+			"email": "mrerliz@gmail.com"
+		}
+	],
+	"require": {
+		"silex/silex": "1.2.x-dev",
+		"twig/twig": "dev-master",
+		"symfony/twig-bridge": "dev-master"
+	},
+	"autoload": {
+		"psr-0": {
+			"Erliz": "src"
+		}
+	}
+}

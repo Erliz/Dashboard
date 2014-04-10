@@ -1,0 +1,40 @@
+{% extends "layout.twig" %}
+
+{% block title %}
+	Тестовая форма отправки html письма
+{% endblock %}
+
+{% block main %}
+	<h1>Почтовая форма</h1>
+	<form action="{{ path('mail_send') }}" method="post" class="form-horizontal" role="form">
+		<div class="form-group">
+			<div class="col-md-2">
+				<label for="form_recipients" class="control-label">Адреса:</label>
+			</div>
+			<div class="col-md-10">
+				<input id="form_recipients" class="form-control" name="recipients" placeholder="example@mail.ru; example@mail.ru;" value="{{ content.recipients|default('') }}" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-2">
+				<label for="form_theme" class="control-label">Тема:</label>
+			</div>
+			<div class="col-md-10">
+				<input id="form_theme" class="form-control" name="theme" placeholder="Номер таска" value="{{ content.theme|default('') }}" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-2">
+				<label for="form_body">Текст:</label>
+			</div>
+			<div class="col-md-10">
+				<textarea class="form-control" name="body" id="form_body" rows="20" placeholder="Your HTML code">{{ content.body|default('') }}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-primary">Отправить</button>
+			</div>
+		</div>
+	</form>
+{% endblock %}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+	{% block head %}
+		{% block meta %}
+			<meta charset="{% block charset %}UTF-8{% endblock %}" />
+		{% endblock %}
+		{% block favicon %}
+			<link rel="shortcut icon" href="/web/favicon.ico">
+			<link rel="shortcut icon" type="image/x-icon" href="/web/favicon.ico">
+			<link rel="apple-touch-icon" sizes="57x57" href="">
+			<link rel="apple-touch-icon" sizes="72x72" href="">
+			<link rel="apple-touch-icon" sizes="114x114" href="">
+			<link rel="apple-touch-icon" sizes="144x144" href="">
+		{% endblock %}
+		<title>{% block title %}Стандартный Заголовок{% endblock %}</title>
+		{%- block stylesheets_all -%}{%- endblock -%}
+		<!--[if (gte IE 8)|!(IE)]><!-->
+		{%- block stylesheets -%}{%- endblock -%}
+		<!--<![endif]-->
+		<!--[if lt IE 8]>
+		{%- block stylesheets_lt_8 -%}{%- endblock -%}
+		<![endif]-->
+		<!--[if IE 8]>
+		{%- block stylesheets_8 -%}{%- endblock -%}
+		<![endif]-->
+		{%- block stylesheets_gt_8 -%}{%- endblock -%}
+		<!--[if lt IE 9]>
+		{%- block javascripts_top_lt_9 -%}{%- endblock -%}
+		<![endif]-->
+		{%- block javascripts_top -%}{%- endblock -%}
+	{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+{% block body %}
+	Hello world!
+{% endblock %}
+{% block javascripts_bottom %}{% endblock %}
+</body>
+</html>
