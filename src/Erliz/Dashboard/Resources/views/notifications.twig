@@ -1,7 +1,9 @@
 <div class="notifications">
-{% for type, messages in flash_bag %}
-	{% for message in messages%}
-		<p class="bg-{{ type }}">{{ message }} <button type="button" class="close" data-dismiss="bg-{{ type }}"  aria-hidden="true">&times;</button></p>
-	{% endfor %}
-{% endfor %}
+{% if flash_bag is defined and flash_bag is not empty %}
+    {% for type, messages in flash_bag %}
+        {% for message in messages%}
+            <p class="bg-{{ type }}">{{ message }} <button type="button" class="close" data-dismiss="bg-{{ type }}"  aria-hidden="true">&times;</button></p>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
 </div>
