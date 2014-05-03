@@ -2,6 +2,7 @@
 ## Project
 #################
 /vendor/
+/src/Erliz/Dashboard/Resources/configs/settings.yaml
 
 #################
 ## Eclipse
