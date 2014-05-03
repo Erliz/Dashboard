@@ -1,0 +1,6 @@
+debug: false
+jira:
+  host: ~
+  ssl: true
+  login: ~
+  password: ~
