@@ -1,7 +1,8 @@
 {% extends "layout.twig" %}
 
-{% block body %}
-	<ul>
-		<li><a href="{{ path('mail_index') }}">Тестирование рассылки</a></li>
+{% block main %}
+	<ul class="list-group">
+		<li class="list-group-item"><a href="{{ path('mail_index') }}">Тестирование рассылки</a></li>
+		<li class="list-group-item"><a href="{{ path('agile_index') }}">Agile</a></li>
 	</ul>
 {% endblock %}
