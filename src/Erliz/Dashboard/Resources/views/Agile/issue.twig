@@ -1,0 +1,7 @@
+{% extends "Agile/layout.twig" %}
+
+{% block sub_title %}{{ issue.key }} {{ issue.summary }}{% endblock %}
+
+{% block main %}
+    {% include 'Agile/Blocks/issue-panel.twig' %}
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "Agile/layout.twig" %}
+
+{% block main %}
+	<ul class="list-group">
+		{#<li class="list-group-item"><a href="{{ path('agile_projects') }}">Проекты</a></li>#}
+        {#<li class="list-group-item"><a href="{{ path('agile_issue') }}">Issue</a></li>#}
+
+        <li class="list-group-item"><a href="{{ path('agile_release_new') }}">Release Manager</a></li>
+	</ul>
+{% endblock %}

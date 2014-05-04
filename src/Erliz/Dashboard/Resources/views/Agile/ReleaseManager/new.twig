@@ -1,0 +1,14 @@
+{% extends "Agile/index.twig" %}
+
+{% block main %}
+    <h3>Введи таск для расскладки</h3>
+    <form class="form" action="" method="post">
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon">{{ release_project }}-</span>
+            <input type="text" class="form-control" name="key" placeholder="Issue Id">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+            </span>
+        </div>
+    </form>
+{% endblock %}

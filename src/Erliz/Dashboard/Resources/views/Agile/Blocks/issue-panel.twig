@@ -1,0 +1,39 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ issue.key }} {{ issue.summary }} ({{ issue.reporter.name }})</h3>
+    </div>
+    <div class="panel-body">
+        <p>{{ issue.description }}</p>
+        <p>Assignee: {{ issue.assignee.name }}</p>
+        {% if issue.labels is not empty %}
+            <p>Labels:
+                {%- for label in issue.labels %} <span class="label label-info">{{ label }}</span>{%- endfor -%}
+            </p>
+        {% endif %}
+    </div>
+    {% if issue.links is not empty %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th colspan="4"><h4>Links</h4></th>
+            </tr>
+            <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Issue</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for link in issue.links %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ link.isInward ? link.type.inward : link.type.outward }}</td>
+                <td><a href="{{ path('agile_issue', {key: link.issue.key}) }}">{{ link.issue.key }}</a> {{ link.issue.summary }}</td>
+                <td>{{ link.issue.status.name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>

@@ -1,8 +1,9 @@
 {
-	"name": "Erliz/TeamLead-Dashboard",
+	"name": "erliz/team-lead-dashboard",
 	"description": "Dashboard for daily coders team lead tasks",
 	"minimum-stability": "dev",
-	"license": "proprietary",
+    "type": "project",
+    "license": "MIT",
 	"authors": [
 		{
 			"name": "Stanislav Vetlovskiy",
@@ -10,9 +11,13 @@
 		}
 	],
 	"require": {
+        "php": ">=5.3.3",
 		"silex/silex": "1.2.x-dev",
 		"twig/twig": "dev-master",
-		"symfony/twig-bridge": "dev-master"
+		"symfony/twig-bridge": "dev-master",
+		"symfony/yaml": "dev-master",
+        "erliz/jira-api-client-guzzle-provider": "~0.1",
+		"twig/extensions": "1.0.x-dev"
 	},
 	"autoload": {
 		"psr-0": {

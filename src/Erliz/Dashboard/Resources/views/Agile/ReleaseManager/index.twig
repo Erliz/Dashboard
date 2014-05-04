@@ -1,0 +1,75 @@
+{% extends "Agile/layout.twig" %}
+
+{% block sub_title %}Release Manager{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12">
+            <h3>{{ release_issue.key }} {{ release_issue.summary }}</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <table class="table table-condensed">
+                <tr class="
+                    {%- if release_issue.status.name == 'Open' -%}info
+                    {%- elseif release_issue.status.name == 'In Progress' -%}warning
+                    {%- elseif release_issue.status.name == 'Closed' -%}danger
+                {%- endif -%}">
+                    <td>Status</td>
+                    <td>{{ release_issue.status.name }}</td>
+                </tr>
+                <tr>
+                    <td>Releaser</td>
+                    <td>{{ release_issue.reporter.name }}</td>
+                </tr>
+                <tr>
+                    <td>Admin</td>
+                    <td>{{ release_issue.assignee.name }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if release_issue.links is not empty %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th colspan="4"><h4>Links</h4></th>
+                    </tr>
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Issue</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for link in release_issue.links %}
+                        <tr class="
+                            {%- if link.issue.status.name == 'Approve' -%}success
+                            {%- else -%}error
+                            {%- endif -%}
+                        ">
+                            <td>{{ loop.index }}</td>
+                            <td>{{ link.isInward ? link.type.inward : link.type.outward }}</td>
+                            <td><a href="{{ path('agile_issue', {key: link.issue.key}) }}">{{ link.issue.key }}</a> {{ link.issue.summary|truncate(50) }}</td>
+                            <td>{{ link.issue.status.name }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="4">
+                        {% for project_key, issues in linked_issues_by_projects %}
+                            {{ project_key }}: {{ issues|length }}{% if loop.index != loop.length %} / {% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No Linked Issues</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
