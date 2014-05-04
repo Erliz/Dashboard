@@ -27,6 +27,12 @@
                     <td>Admin</td>
                     <td>{{ release_issue.assignee.name }}</td>
                 </tr>
+                {% if release_issue.labels is not empty %}
+                <tr>
+                    <td>Labels</td>
+                    <td>{% include 'Agile/Blocks/labels.twig' with {labels: release_issue.labels} %}</td>
+                </tr>
+                {% endif %}
             </table>
         </div>
     </div>

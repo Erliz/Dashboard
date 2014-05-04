@@ -6,9 +6,7 @@
         <p>{{ issue.description }}</p>
         <p>Assignee: {{ issue.assignee.name }}</p>
         {% if issue.labels is not empty %}
-            <p>Labels:
-                {%- for label in issue.labels %} <span class="label label-info">{{ label }}</span>{%- endfor -%}
-            </p>
+            <p>Labels: {% include 'Agile/Blocks/labels.twig' with {labels: issue.labels} %}</p>
         {% endif %}
     </div>
     {% if issue.links is not empty %}
