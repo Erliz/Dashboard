@@ -13,6 +13,7 @@ class MailService
     {
         $header = "Content-type: text/html; charset=\"utf-8\"\r\n";
         $header .= "From: Mailer test server\r\n";
+
         return mail(join(',', $recipients), $theme, $body, $header);
     }
 
@@ -29,6 +30,7 @@ class MailService
             $recipient,
             function ($element){ return !!$element && strpos($element, '@') !== false; }
         );
+
         return $recipient;
     }
 }

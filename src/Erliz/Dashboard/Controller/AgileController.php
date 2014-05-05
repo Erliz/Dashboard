@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class AgileController
 {
     const RELEASE_PROJECT_KEY = 'MNT';
+    const RELEASE_LABEL = 'merged';
 
     public function indexAction(Request $request, Application $app)
     {
@@ -64,8 +65,26 @@ class AgileController
             'Agile/ReleaseManager/index.twig',
             array(
                 'release_issue' => $issue,
-                'linked_issues_by_projects' => $jiraService->IssuesInLinksByProject($issue->getLinks())
+                'release_label' => $this::RELEASE_LABEL,
+                'release_tags' => $jiraService->getVersionsFromString($issue->getSummary()),
+                'linked_issues_by_projects' => $jiraService->IssuesInLinksByProject($issue->getLinks()),
+                'flash_bag' => $app['service.flash_bag']->getMessages()
             )
         );
+    }
+
+    public function releaseLabelRemoveAction(Request $request, Application $app)
+    {
+        /** @var JiraService $jiraService */
+        $jiraService = $app['service.jira'];
+        $key = $request->get('key');
+        $issue = $jiraService->getIssue($key);
+
+        $jiraService->removeLabelFromLinks($issue, $this::RELEASE_LABEL);
+        $app['service.flash_bag']->success(
+            sprintf('Successfully remove label "%s" from linked issues', $this::RELEASE_LABEL)
+        );
+
+        return $app->redirect($app['url_generator']->generate('agile_release', array('key' => $key)));
     }
 }

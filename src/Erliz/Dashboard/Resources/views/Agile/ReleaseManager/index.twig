@@ -33,7 +33,18 @@
                     <td>{% include 'Agile/Blocks/labels.twig' with {labels: release_issue.labels} %}</td>
                 </tr>
                 {% endif %}
+                {% if release_tags is not empty %}
+                <tr>
+                    <td>Tags</td>
+                    <td>{% include 'Agile/Blocks/labels.twig' with {labels: release_tags} %}</td>
+                </tr>
+                {% endif %}
             </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <a href="{{ path("agile_release_label_remove", {key: release_issue.key}) }}" class="btn btn-warning">Удалить метки "{{ release_label }}"</a>
         </div>
     </div>
     <div class="row">
@@ -42,7 +53,11 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th colspan="4"><h4>Links</h4></th>
+                        <th colspan="4"><h4>Links</h4>
+	                        {%- for project_key, issues in linked_issues_by_projects -%}
+	                        {{ project_key }}: {{ issues|length }}{% if loop.index != loop.length %} / {% endif -%}
+	                        {%- endfor -%}
+                        </th>
                     </tr>
                     <tr>
                         <th>#</th>
@@ -64,13 +79,6 @@
                             <td>{{ link.issue.status.name }}</td>
                         </tr>
                     {% endfor %}
-                    <tr>
-                        <td colspan="4">
-                        {% for project_key, issues in linked_issues_by_projects %}
-                            {{ project_key }}: {{ issues|length }}{% if loop.index != loop.length %} / {% endif %}
-                        {% endfor %}
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
             {% else %}

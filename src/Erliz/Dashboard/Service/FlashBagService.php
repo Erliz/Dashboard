@@ -3,7 +3,6 @@
 namespace Erliz\Dashboard\Service;
 
 use Silex\Application;
-use Symfony\Component\Debug\Exception\DummyException;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 /**
@@ -39,7 +38,7 @@ class FlashBagService
     public function content(array $content, $force = false)
     {
         if($this->flashBag->has('content') && !$force){
-            throw new DummyException('Flash Bag content already set');
+            throw new \RuntimeException('Flash Bag content already set');
         }
 
         $this->flashBag->add('content', $content);

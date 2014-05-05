@@ -94,4 +94,34 @@ class JiraService
 
         return $projects;
     }
+
+    /**
+     * @param $string
+     *
+     * @return bool
+     */
+    public function getVersionsFromString($string)
+    {
+        preg_match_all('/v?(\d+\.\d+\.\d+)/', $string, $match);
+
+        return isset($match[1]) ? $match[1] : false;
+    }
+
+    /**
+     * @param Issue  $issue
+     * @param string $label
+     */
+    public function removeLabelFromLinks(Issue $issue, $label)
+    {
+        foreach($issue->getLinks() as $link) {
+            $labels = $link->getIssue()->getLabels();
+            if(($key = array_search($label, $labels)) !== false) {
+                unset($labels[$key]);
+                // reset array key for json_encode
+                $labels = array_values($labels);
+                $this->apiClient->updateIssueData($link->getIssue()->getKey(), array('fields'=>array('labels' => $labels)));
+                $issue->setLabels($labels);
+            }
+        }
+    }
 }

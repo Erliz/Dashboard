@@ -55,5 +55,6 @@ $app->get('/agile/',               'Erliz\\Dashboard\\Controller\\AgileControlle
 $app->get('/agile/issue/{key}/',   'Erliz\\Dashboard\\Controller\\AgileController::issueAction')->bind('agile_issue');
 $app->match('/agile/release/new/', 'Erliz\\Dashboard\\Controller\\AgileController::newReleaseAction')->bind('agile_release_new');
 $app->get('/agile/release/{key}/', 'Erliz\\Dashboard\\Controller\\AgileController::releaseAction')->bind('agile_release');
+$app->get('/agile/release/{key}/label/remove/', 'Erliz\\Dashboard\\Controller\\AgileController::releaseLabelRemoveAction')->bind('agile_release_label_remove');
 
 $app->run();

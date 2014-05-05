@@ -56,6 +56,7 @@ class MailController
         $app['service.flash_bag']->content(
             array('theme' => $theme, 'body' => $body, 'recipients' => join(';', $recipients))
         );
+
         return $app->redirect($app['url_generator']->generate('mail_index'));
     }
 }
