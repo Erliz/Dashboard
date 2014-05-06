@@ -32,12 +32,14 @@ $app->register(new Silex\Provider\SessionServiceProvider());
 $app['service.mail'] = $app->share(function() { return new \Erliz\Dashboard\Service\MailService(); });
 $app['service.jira'] = $app->share(function() use ($app) {
         $config = $app['config']['jira'];
-        return new \Erliz\Dashboard\Service\JiraService(
+        $service = new \Erliz\Dashboard\Service\JiraService(
             $config['login'],
             $config['password'],
             $config['host'],
             $config['ssl']
         );
+        $service->setTestbed($app['config']['jira']['testbed']['host'], $app['config']['jira']['testbed']['scheme']);
+        return $service;
     });
 $app['service.flash_bag'] = $app->share(
     function () use ($app){ return new \Erliz\Dashboard\Service\FlashBagService($app['session']->getFlashBag()); }
@@ -53,6 +55,10 @@ $app->post('/mail/send/',         'Erliz\\Dashboard\\Controller\\MailController:
 
 $app->get('/agile/',               'Erliz\\Dashboard\\Controller\\AgileController::indexAction')->bind('agile_index');
 $app->get('/agile/issue/{key}/',   'Erliz\\Dashboard\\Controller\\AgileController::issueAction')->bind('agile_issue');
+$app->get('/agile/issue/{key}/label/add/{label}/',   'Erliz\\Dashboard\\Controller\\AgileController::issueAddLabelAction')->bind('agile_issue_label_add');
+$app->get('/agile/issue/{key}/label/remove/{label}/',   'Erliz\\Dashboard\\Controller\\AgileController::issueRemoveLabelAction')->bind('agile_issue_label_remove');
+$app->get('/agile/issue/{key}/comment/test/',   'Erliz\\Dashboard\\Controller\\AgileController::issueTestCommentAction')->bind('agile_issue_comment_test');
+
 $app->match('/agile/release/new/', 'Erliz\\Dashboard\\Controller\\AgileController::newReleaseAction')->bind('agile_release_new');
 $app->get('/agile/release/{key}/', 'Erliz\\Dashboard\\Controller\\AgileController::releaseAction')->bind('agile_release');
 $app->get('/agile/release/{key}/label/remove/', 'Erliz\\Dashboard\\Controller\\AgileController::releaseLabelRemoveAction')->bind('agile_release_label_remove');

@@ -18,6 +18,7 @@ class AgileController
 {
     const RELEASE_PROJECT_KEY = 'MNT';
     const RELEASE_LABEL = 'merged';
+    const DEV_LABEL = 'in_branch_dev';
 
     public function indexAction(Request $request, Application $app)
     {
@@ -34,8 +35,42 @@ class AgileController
         $issue = $jiraService->getIssue($request->get('key'));
         return $app['twig']->render(
             'Agile/issue.twig',
-            array('issue' => $issue)
+            array(
+                'issue' => $issue,
+                'release_label' => $this::RELEASE_LABEL,
+                'dev_label' => $this::DEV_LABEL
+            )
         );
+    }
+
+    public function issueAddLabelAction(Request $request, Application $app)
+    {
+        /** @var JiraService $jiraService */
+        $jiraService = $app['service.jira'];
+        $issue = $jiraService->getIssue($request->get('key'));
+        $jiraService->addLabel($issue, $request->get('label'));
+
+        return $app->redirect($app['url_generator']->generate('agile_issue', array('key' => $issue->getKey())));
+    }
+
+    public function issueRemoveLabelAction(Request $request, Application $app)
+    {
+        /** @var JiraService $jiraService */
+        $jiraService = $app['service.jira'];
+        $issue = $jiraService->getIssue($request->get('key'));
+        $jiraService->removeLabel($issue, $request->get('label'));
+
+        return $app->redirect($app['url_generator']->generate('agile_issue', array('key' => $issue->getKey())));
+    }
+
+    public function issueTestCommentAction(Request $request, Application $app)
+    {
+        /** @var JiraService $jiraService */
+        $jiraService = $app['service.jira'];
+        $issue = $jiraService->getIssue($request->get('key'));
+        $jiraService->addTestComment($issue);
+
+        return $app->redirect($app['url_generator']->generate('agile_issue', array('key' => $issue->getKey())));
     }
 
     public function newReleaseAction(Request $request, Application $app)

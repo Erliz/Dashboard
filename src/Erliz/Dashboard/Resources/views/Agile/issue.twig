@@ -3,5 +3,33 @@
 {% block sub_title %}{{ issue.key }} {{ issue.summary }}{% endblock %}
 
 {% block main %}
-    {% include 'Agile/Blocks/issue-panel.twig' %}
+    <div class="row">
+        <div class="col-md-12">
+            {% include 'Agile/Blocks/issue-panel.twig' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                {% if release_label in issue.labels %}
+                    <a class="btn btn-warning" href="{{ path('agile_issue_label_remove', {'key': issue.key, 'label': release_label }) }}">Удалить "{{ release_label }}"</a>
+                {% else %}
+                    <a class="btn btn-success" href="{{ path('agile_issue_label_add', {'key': issue.key, 'label': release_label }) }}">Добавить "{{ release_label }}"</a>
+                {% endif %}
+                {% if dev_label in issue.labels %}
+                    <a class="btn btn-warning" href="{{ path('agile_issue_label_remove', {'key': issue.key, 'label': dev_label }) }}">Удалить "{{ dev_label }}"</a>
+                {% else %}
+                    <a class="btn btn-success" href="{{ path('agile_issue_label_add', {'key': issue.key, 'label': dev_label }) }}">Добавить "{{ dev_label }}"</a>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p>
+                <a class="btn btn-success" href="{{ path('agile_issue_comment_test', {'key': issue.key, 'label': dev_label }) }}">Добавить ссылку на тест</a>
+                <a class="btn btn-success disabled" href="">Добавить указания к выкладке</a>
+            </p>
+        </div>
+    </div>
 {% endblock %}

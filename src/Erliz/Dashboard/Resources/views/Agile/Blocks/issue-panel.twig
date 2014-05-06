@@ -8,6 +8,8 @@
         {% if issue.labels is not empty %}
             <p>Labels: {% include 'Agile/Blocks/labels.twig' with {labels: issue.labels} %}</p>
         {% endif %}
+        {% set test_url = app.config.jira.testbed.scheme ~ "://" ~ issue.key|lower ~ "." ~ app.config.jira.testbed.host ~ "/" %}
+        <p>Test Url: <a href="{{ test_url }}" target="_blank">{{ test_url }}</a></p>
     </div>
     {% if issue.links is not empty %}
     <table class="table">

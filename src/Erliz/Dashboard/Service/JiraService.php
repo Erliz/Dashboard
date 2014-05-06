@@ -7,6 +7,7 @@
 namespace Erliz\Dashboard\Service;
 
 use Erliz\JiraApiClient\Api\Client as ApiClient;
+use Erliz\JiraApiClient\Entity\Comment;
 use Erliz\JiraApiClient\Entity\Issue;
 use Erliz\JiraApiClient\Entity\IssueLink;
 use Erliz\JiraApiClient\Http\Client as HttpClient;
@@ -19,6 +20,8 @@ class JiraService
 {
     /** @var ApiClient */
     private $apiClient;
+    /** @var array */
+    private $issueTestbed;
 
     /**
      * @param string $login
@@ -34,6 +37,17 @@ class JiraService
         $this->apiClient->setEntityManager(new EntityManager());
     }
 
+    /**
+     * @param string $host
+     * @param string $scheme
+     */
+    public function setTestbed($host, $scheme = 'http')
+    {
+        $this->issueTestbed = array(
+            'host' => $host,
+            'scheme' => $scheme
+        );
+    }
 
     /**
      * @param $key
@@ -114,14 +128,65 @@ class JiraService
     public function removeLabelFromLinks(Issue $issue, $label)
     {
         foreach($issue->getLinks() as $link) {
-            $labels = $link->getIssue()->getLabels();
-            if(($key = array_search($label, $labels)) !== false) {
-                unset($labels[$key]);
-                // reset array key for json_encode
-                $labels = array_values($labels);
-                $this->apiClient->updateIssueData($link->getIssue()->getKey(), array('fields'=>array('labels' => $labels)));
-                $issue->setLabels($labels);
-            }
+            $this->removeLabel($link->getIssue(), $label);
         }
+    }
+
+    /**
+     * @param Issue  $issue
+     * @param string $label
+     */
+    public function addLabel(Issue $issue, $label)
+    {
+        $issue->addLabel($label);
+        $this->apiClient->updateIssueData($issue->getKey(), array('fields'=>array('labels' => $issue->getLabels())));
+    }
+
+    /**
+     * @param Issue  $issue
+     * @param string $label
+     */
+    public function removeLabel(Issue $issue, $label)
+    {
+        $labels = $issue->getLabels();
+        if(($key = array_search($label, $labels)) !== false) {
+            unset($labels[$key]);
+            $issue->setLabels($labels);
+            $this->apiClient->updateIssueData($issue->getKey(), array('fields'=>array('labels' => $issue->getLabels())));
+        }
+    }
+
+    public function addTestComment(Issue $issue)
+    {
+        $comment = new Comment();
+        $comment->setBody("Тестовый стенд разложен и доступен по адресу: \n" . $this->generateTestbedUrl($issue));
+        $this->addComment($issue, $comment);
+        $issue->addComment($comment);
+    }
+
+    public function addComment(Issue $issue, Comment $comment)
+    {
+        $this->apiClient->addCommentData($issue->getKey(), array('body' => $comment->getBody()));
+    }
+
+    /**
+     * @param Issue $issue
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    private function generateTestbedUrl(Issue $issue)
+    {
+        if (empty($this->issueTestbed)) {
+            throw new \RuntimeException('Not set testbed host and scheme');
+        }
+
+        return sprintf(
+            '%s://%s.%s',
+            $this->issueTestbed['scheme'],
+            strtolower($issue->getKey()),
+            $this->issueTestbed['host']
+        );
     }
 }
