@@ -4,3 +4,13 @@ jira:
   ssl: true
   login: ~
   password: ~
+  transition:
+    torg:
+      test: ~
+      check: ~
+    frontend:
+      test: ~
+      check: ~
+  testbed:
+    scheme: http
+    host: ~

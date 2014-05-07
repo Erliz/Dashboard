@@ -32,4 +32,14 @@
             </p>
         </div>
     </div>
+    <table>
+        {% for transitionId in [app.config.jira.transition.frontend.check, app.config.jira.transition.frontend.test, app.config.jira.transition.torg.check, app.config.jira.transition.torg.test] %}
+            {% if issue.haveTransition(transitionId) %}
+                <a class="btn btn-success" href="{{ path('agile_issue_transition', {'key': issue.key, 'id': transitionId }) }}">{{ issue.getTransition(transitionId).name }}</a>
+            {% endif %}
+        {% endfor %}
+        {% for tr in issue.transitions %}
+        <tr><td>{{ tr.id }} - {{ tr.name }}</td></tr>
+        {% endfor %}
+    </table>
 {% endblock %}

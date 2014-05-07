@@ -43,8 +43,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
-            <a href="{{ path("agile_release_label_remove", {key: release_issue.key}) }}" class="btn btn-warning">Удалить метки "{{ release_label }}"</a>
+        <div class="col-md-6">
+            <a href="{{ path("agile_release_label_remove", {key: release_issue.key}) }}" class="btn btn-primary">Удалить метки "{{ release_label }}"</a>
+            <a href="{{ path("agile_release_transition", {key: release_issue.key}) }}" class="btn btn-primary">Отправить все таски на проверку</a>
         </div>
     </div>
     <div class="row">

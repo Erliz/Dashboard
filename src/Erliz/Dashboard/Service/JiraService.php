@@ -10,6 +10,7 @@ use Erliz\JiraApiClient\Api\Client as ApiClient;
 use Erliz\JiraApiClient\Entity\Comment;
 use Erliz\JiraApiClient\Entity\Issue;
 use Erliz\JiraApiClient\Entity\IssueLink;
+use Erliz\JiraApiClient\Entity\Transition;
 use Erliz\JiraApiClient\Http\Client as HttpClient;
 use Erliz\JiraApiClient\Manager\EntityManager;
 use Guzzle\Http\Exception\ClientErrorResponseException;
@@ -188,5 +189,68 @@ class JiraService
             strtolower($issue->getKey()),
             $this->issueTestbed['host']
         );
+    }
+
+    /**
+     * @param Issue $issue
+     * @param int   $transitionId
+     *
+     * @throws \RuntimeException
+     */
+    public function transitIssue(Issue $issue, $transitionId)
+    {
+        $transition = $issue->getTransition($transitionId);
+        if (!$transition) {
+            throw new \RuntimeException(
+                sprintf("Transition id '%s' not available for issue '%s'", $transitionId, $issue->getKey())
+            );
+        }
+
+        $this->apiClient->transitIssue($issue->getKey(), array('transition' => array('id' => $transition->getId())));
+    }
+
+    /**
+     * @param Issue     $issue
+     * @param int|int[] $transitionsId available transitions code
+     *
+     * @return array
+     */
+    public function transitIssuesFromLinks(Issue $issue, $transitionsId)
+    {
+        $result = array(
+            'success' => 0,
+            'fail' => 0,
+            'fails' => array(
+                array('message' => 'Issue have no available transition', 'items' => array()),
+                array('message' => 'Fail on transaction', 'items' => array())
+            )
+        );
+        if (!is_array($transitionsId)) {
+            $transitionsId = array($transitionsId);
+        }
+
+        foreach($issue->getLinks() as $link) {
+            $logged = false;
+            try {
+                foreach($transitionsId as $id) {
+                    if ($transition = $link->getIssue()->getTransition($id)) {
+                        $this->transitIssue($link->getIssue(), $transition->getId());
+                        $result['success']++;
+                        $logged =  true;
+                        continue(2);
+                    }
+                }
+            } catch (\RuntimeException $e) {
+                $result['fails'][1]['items'][] = $link->getIssue();
+                $result['fail']++;
+                $logged = true;
+            }
+            if (!$logged) {
+                $result['fails'][0]['items'][] = $link->getIssue();
+                $result['fail']++;
+            }
+        }
+
+        return $result;
     }
 }

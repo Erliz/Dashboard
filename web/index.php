@@ -58,9 +58,11 @@ $app->get('/agile/issue/{key}/',   'Erliz\\Dashboard\\Controller\\AgileControlle
 $app->get('/agile/issue/{key}/label/add/{label}/',   'Erliz\\Dashboard\\Controller\\AgileController::issueAddLabelAction')->bind('agile_issue_label_add');
 $app->get('/agile/issue/{key}/label/remove/{label}/',   'Erliz\\Dashboard\\Controller\\AgileController::issueRemoveLabelAction')->bind('agile_issue_label_remove');
 $app->get('/agile/issue/{key}/comment/test/',   'Erliz\\Dashboard\\Controller\\AgileController::issueTestCommentAction')->bind('agile_issue_comment_test');
+$app->get('/agile/issue/{key}/transition/{id}/',   'Erliz\\Dashboard\\Controller\\AgileController::issueTransitionAction')->bind('agile_issue_transition');
 
 $app->match('/agile/release/new/', 'Erliz\\Dashboard\\Controller\\AgileController::newReleaseAction')->bind('agile_release_new');
 $app->get('/agile/release/{key}/', 'Erliz\\Dashboard\\Controller\\AgileController::releaseAction')->bind('agile_release');
 $app->get('/agile/release/{key}/label/remove/', 'Erliz\\Dashboard\\Controller\\AgileController::releaseLabelRemoveAction')->bind('agile_release_label_remove');
+$app->get('/agile/release/{key}/transition/', 'Erliz\\Dashboard\\Controller\\AgileController::releaseTransitionAction')->bind('agile_release_transition');
 
 $app->run();

@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <p>{{ issue.description }}</p>
-        <p>Assignee: {{ issue.assignee.name }}</p>
+        <p>Assignee: {{ issue.assignee.name|default("Undefined") }}</p>
         {% if issue.labels is not empty %}
             <p>Labels: {% include 'Agile/Blocks/labels.twig' with {labels: issue.labels} %}</p>
         {% endif %}
